@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Adrian Mleczek/001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -152,7 +152,13 @@ class PriorityQueue<E, P> {
     public Node add(E e, P priority) {
 
         // YOUR CODE GOES HERE
-        return null;
+        //create node
+        Node newNo = new Node(e, priority, tree.size());
+        //insert into heap
+        tree.add(newNo);
+        //reshape queue to keep it proper 
+        pullUp(tree.size()-1);
+        return newNo;
     }
 
 
@@ -167,8 +173,17 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        
+        
+       //iterate through queue
+        for(Node node : tree)
+        {
+            //check if element exists--with conditions to avoid errors
+            if(node.value.equals(e)&&node!=null&&node.value!=null)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -450,3 +465,4 @@ class PriorityQueue<E, P> {
         }
     }
 }
+

@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Adrian Mleczek/001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -68,7 +68,29 @@ public class ProblemSolutions {
       //
       // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
       //
-      return -1;
+      //use comparator to intialize in reverse order
+      PriorityQueue<Integer> reverse = new PriorityQueue<>(Comparator.reverseOrder());
+      //populate the queue
+      for (int i: boulders) {
+            reverse.offer(i);
+        }
+      while (reverse.size() > 1) {
+           //record two largest boulders
+            int x = reverse.poll();  
+            int y = reverse.poll();
+            //compare the two largest
+            if (x != y) {
+                //return new boulder to queue
+                reverse.offer(x-y); 
+            }
+      }
+      if(reverse.isEmpty()){
+          return 0;
+      }
+      else
+      {
+         return reverse.peek();
+      }
   }
 
 
@@ -90,11 +112,34 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+        
+        //hashmap allows us to efficently store a string and the # of times it repeats
+        HashMap<String, Integer> dupNum = new HashMap<>();
+        
+        
+        //populates the hashmap 
+        for (String inp : input) {
+            dupNum.put(inp, dupNum.getOrDefault(inp, 0) + 1);
+        }
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        //create priorityQueue to store strings with priority
+        PriorityQueue<String> temp = new PriorityQueue<>();
+
+        //populates queue
+        for (Map.Entry<String, Integer> entry : dupNum.entrySet()) {
+            if (entry.getValue() > 1) {
+                temp.offer(entry.getKey());
+            }
+        }
+
+        //create and populate an arraylist to return
+        ArrayList<String> result = new ArrayList<>();
+        while (temp.isEmpty()==false) {
+            result.add(temp.poll()); 
+        }
+
+        return result;
+        
 
     }
 
@@ -134,6 +179,41 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        //hashset to store value already iterated through
+        HashSet<Integer> store = new HashSet<>();
+        //arraylist to store pairs
+        ArrayList<String> result = new ArrayList<>();
+        //integers to store members of each pair
+        int sma,lrg;
+        //iterate through given array
+        for(int i :input)
+        {
+            //we know that k = i + remainder
+            int remainder = k - i;
+            //iterates to see if such a remainder exists
+            if(store.contains(remainder))
+            {
+                //determines order within the pair
+                if(i>remainder)
+                {
+                    lrg = i;
+                    sma = remainder;
+                }
+                else
+                {
+                   sma = i;
+                   lrg = remainder; 
+                }
+                //adds pair to set while checking to see if the pair already exists
+                if(!result.contains("(" +sma+", "+ lrg+")"))
+                {
+                result.add("(" +sma+", "+ lrg+")");
+                }
+            }
+            store.add(i);
+        }
+        //sorts and returns
+        Collections.sort(result);
+        return result;  // Make sure returned lists is sorted as indicated above
     }
 }
